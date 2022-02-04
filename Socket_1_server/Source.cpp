@@ -1,14 +1,14 @@
-#include <iostream>
+п»ї#include <iostream>
 
-#include <WinSock2.h>	// Функции сокетов
-#include <WS2tcpip.h>	// Для работы с ip адресами
+#include <WinSock2.h>	// Р¤СѓРЅРєС†РёРё СЃРѕРєРµС‚РѕРІ
+#include <WS2tcpip.h>	// Р”Р»СЏ СЂР°Р±РѕС‚С‹ СЃ ip Р°РґСЂРµСЃР°РјРё
 
-#define PORT 800	// порт
-#define QUEUE_MESSAGE 0x01	// ограничивает количество одновременно обрабатываемых соединений сервером
+#define PORT 800	// РїРѕСЂС‚
+#define QUEUE_MESSAGE 0x01	// РѕРіСЂР°РЅРёС‡РёРІР°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹С… СЃРѕРµРґРёРЅРµРЅРёР№ СЃРµСЂРІРµСЂРѕРј
 
 #define BUFER_SIZE 1024
 
-#pragma comment(lib, "Ws2_32.lib")	// Необходимая диначимеская библиотека
+#pragma comment(lib, "Ws2_32.lib")	// РќРµРѕР±С…РѕРґРёРјР°СЏ РґРёРЅР°С‡РёРјРµСЃРєР°СЏ Р±РёР±Р»РёРѕС‚РµРєР°
 
 using std::cerr;
 
@@ -18,13 +18,13 @@ int main()
 
 	std::cout << "Program is runned..." << std::endl;
 
-	if (WSAStartup(0x0202, (WSADATA*)&bufer[0]) != 0)	// Загрузка dll библиотеки в память (инициалиация)
+	if (WSAStartup(0x0202, (WSADATA*)&bufer[0]) != 0)	// Р—Р°РіСЂСѓР·РєР° dll Р±РёР±Р»РёРѕС‚РµРєРё РІ РїР°РјСЏС‚СЊ (РёРЅРёС†РёР°Р»РёР°С†РёСЏ)
 	{
 		cerr << "Error load dll";
 		return -1;
 	}
 	
-	SOCKET _socket = socket(AF_INET, SOCK_STREAM, NULL);	// Создание экземпляра сокета
+	SOCKET _socket = socket(AF_INET, SOCK_STREAM, NULL);	// РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° СЃРѕРєРµС‚Р°
 	if (_socket < 0)
 	{
 		cerr << "Error create socket";
@@ -32,12 +32,12 @@ int main()
 		return -2;
 	}
 
-	sockaddr_in local_addr;	// Экземпляр с данными о сервере, ниже инициализация полей
-	local_addr.sin_family = AF_INET;	// семейство протоколов (как правило AF_INET == для ip-адресов v4)
-	local_addr.sin_port = htons(PORT);	// порт
-	local_addr.sin_addr.S_un.S_addr = 0;	// поле с адресом
+	sockaddr_in local_addr;	// Р­РєР·РµРјРїР»СЏСЂ СЃ РґР°РЅРЅС‹РјРё Рѕ СЃРµСЂРІРµСЂРµ, РЅРёР¶Рµ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРѕР»РµР№
+	local_addr.sin_family = AF_INET;	// СЃРµРјРµР№СЃС‚РІРѕ РїСЂРѕС‚РѕРєРѕР»РѕРІ (РєР°Рє РїСЂР°РІРёР»Рѕ AF_INET == РґР»СЏ ip-Р°РґСЂРµСЃРѕРІ v4)
+	local_addr.sin_port = htons(PORT);	// РїРѕСЂС‚
+	local_addr.sin_addr.S_un.S_addr = 0;	// РїРѕР»Рµ СЃ Р°РґСЂРµСЃРѕРј
 	
-	if (bind(_socket, (sockaddr*)&local_addr, sizeof(local_addr)) == SOCKET_ERROR)	// Связывание порта с ip-фдресом (чтобы он мог принимать входящие соединения)
+	if (bind(_socket, (sockaddr*)&local_addr, sizeof(local_addr)) == SOCKET_ERROR)	// РЎРІСЏР·С‹РІР°РЅРёРµ РїРѕСЂС‚Р° СЃ ip-С„РґСЂРµСЃРѕРј (С‡С‚РѕР±С‹ РѕРЅ РјРѕРі РїСЂРёРЅРёРјР°С‚СЊ РІС…РѕРґСЏС‰РёРµ СЃРѕРµРґРёРЅРµРЅРёСЏ)
 	{
 		cerr << "Error bind socket: " << WSAGetLastError();
 		closesocket(_socket);
@@ -45,7 +45,7 @@ int main()
 		return -3;
 	}
 
-	if (listen(_socket, QUEUE_MESSAGE) == SOCKET_ERROR)	// Подготовка сокета к приему входящих соединений от клиентов (сервер переходит в режим ожидания подключений)
+	if (listen(_socket, QUEUE_MESSAGE) == SOCKET_ERROR)	// РџРѕРґРіРѕС‚РѕРІРєР° СЃРѕРєРµС‚Р° Рє РїСЂРёРµРјСѓ РІС…РѕРґСЏС‰РёС… СЃРѕРµРґРёРЅРµРЅРёР№ РѕС‚ РєР»РёРµРЅС‚РѕРІ (СЃРµСЂРІРµСЂ РїРµСЂРµС…РѕРґРёС‚ РІ СЂРµР¶РёРј РѕР¶РёРґР°РЅРёСЏ РїРѕРґРєР»СЋС‡РµРЅРёР№)
 	{
 		cerr << WSAGetLastError();
 		closesocket(_socket);
@@ -61,23 +61,23 @@ int main()
 
 	const char* message = "Hello client!";
 
-	while ((client_socket = accept(_socket, (sockaddr*)&client_addr, &size_client_addr)) >= 0)	// Цикл обработки поступающих запросов от клиентов
+	while ((client_socket = accept(_socket, (sockaddr*)&client_addr, &size_client_addr)) >= 0)	// Р¦РёРєР» РѕР±СЂР°Р±РѕС‚РєРё РїРѕСЃС‚СѓРїР°СЋС‰РёС… Р·Р°РїСЂРѕСЃРѕРІ РѕС‚ РєР»РёРµРЅС‚РѕРІ
 	{
 		HOSTENT* hst;
-		hst = gethostbyaddr((char*)&client_addr.sin_addr.S_un.S_addr, 4, AF_INET);	// Получение имени клиента по адресу
-		std::cout << "New user connected: " << hst->h_name << " [" << inet_ntoa(client_addr.sin_addr) << "]" << std::endl;	// Выввод в консоль инфы о новом клиенте
+		hst = gethostbyaddr((char*)&client_addr.sin_addr.S_un.S_addr, 4, AF_INET);	// РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё РєР»РёРµРЅС‚Р° РїРѕ Р°РґСЂРµСЃСѓ
+		std::cout << "New user connected: " << hst->h_name << " [" << inet_ntoa(client_addr.sin_addr) << "]" << std::endl;	// Р’С‹РІРІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ РёРЅС„С‹ Рѕ РЅРѕРІРѕРј РєР»РёРµРЅС‚Рµ
 #define MESS "Hello client!\n"
 		std::cout << "Len data == " << sizeof(MESS) << std::endl;
-		send(client_socket, MESS, 13, 0);	// Отправка клиенту
-		/*Здесь возможно создание отдельных потоков и уже там обрабатывать поступающих клиентов*/
+		send(client_socket, MESS, 13, 0);	// РћС‚РїСЂР°РІРєР° РєР»РёРµРЅС‚Сѓ
+		/*Р—РґРµСЃСЊ РІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°РЅРёРµ РѕС‚РґРµР»СЊРЅС‹С… РїРѕС‚РѕРєРѕРІ Рё СѓР¶Рµ С‚Р°Рј РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РїРѕСЃС‚СѓРїР°СЋС‰РёС… РєР»РёРµРЅС‚РѕРІ*/
 		break;
 	}
 
 	std::cout << "Server is close..." << std::endl;
 
-	shutdown(client_socket, SD_BOTH);	// Выборочное закрытие соединений: и 'сервер -> клиент',и 'клиент -> сервер'
-	closesocket(client_socket);		// Закрываем сокет
-	WSACleanup();	// Выгружаем из памяти библиотеку dll
+	shutdown(client_socket, SD_BOTH);	// Р’С‹Р±РѕСЂРѕС‡РЅРѕРµ Р·Р°РєСЂС‹С‚РёРµ СЃРѕРµРґРёРЅРµРЅРёР№: Рё 'СЃРµСЂРІРµСЂ -> РєР»РёРµРЅС‚',Рё 'РєР»РёРµРЅС‚ -> СЃРµСЂРІРµСЂ'
+	closesocket(client_socket);		// Р—Р°РєСЂС‹РІР°РµРј СЃРѕРєРµС‚
+	WSACleanup();	// Р’С‹РіСЂСѓР¶Р°РµРј РёР· РїР°РјСЏС‚Рё Р±РёР±Р»РёРѕС‚РµРєСѓ dll
 
 	std::cout << "\n\nServer is stopped\nProgram finished!!!" << std::endl;
 

@@ -1,14 +1,14 @@
-#include <iostream>
+п»ї#include <iostream>
 
-#include <WinSock2.h>	// Функции сокетов
-#include <WS2tcpip.h>	// Для работы с ip адресами
+#include <WinSock2.h>	// Р¤СѓРЅРєС†РёРё СЃРѕРєРµС‚РѕРІ
+#include <WS2tcpip.h>	// Р”Р»СЏ СЂР°Р±РѕС‚С‹ СЃ ip Р°РґСЂРµСЃР°РјРё
 
-#define PORT 800	// порт
-#define ADDRESS__SERVER "127.0.0.1"	// Адрес сервера (в дальнейшем можно брать как параметр)
+#define PORT 800	// РїРѕСЂС‚
+#define ADDRESS__SERVER "127.0.0.1"	// РђРґСЂРµСЃ СЃРµСЂРІРµСЂР° (РІ РґР°Р»СЊРЅРµР№С€РµРј РјРѕР¶РЅРѕ Р±СЂР°С‚СЊ РєР°Рє РїР°СЂР°РјРµС‚СЂ)
 
 #define BUFER_SIZE 1024
 
-#pragma comment(lib, "Ws2_32.lib")	// Необходимая диначимеская библиотека
+#pragma comment(lib, "Ws2_32.lib")	// РќРµРѕР±С…РѕРґРёРјР°СЏ РґРёРЅР°С‡РёРјРµСЃРєР°СЏ Р±РёР±Р»РёРѕС‚РµРєР°
 
 using std::cerr;
 
@@ -18,14 +18,14 @@ int main()
 
 	std::cout << "Program is start..." << std::endl;
 
-	if (WSAStartup(0x0202, (WSADATA*)&bufer[0]) != 0)	// Загрузка dll библиотеки в память (инициалиация)
+	if (WSAStartup(0x0202, (WSADATA*)&bufer[0]) != 0)	// Р—Р°РіСЂСѓР·РєР° dll Р±РёР±Р»РёРѕС‚РµРєРё РІ РїР°РјСЏС‚СЊ (РёРЅРёС†РёР°Р»РёР°С†РёСЏ)
 	{
 		cerr << "Error load dll";
 		system("pause");
 		return -1;
 	}
 
-	SOCKET _socket = socket(AF_INET, SOCK_STREAM, NULL);	// Создание экземпляра сокета
+	SOCKET _socket = socket(AF_INET, SOCK_STREAM, NULL);	// РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° СЃРѕРєРµС‚Р°
 	if (_socket < 0)
 	{
 		cerr << "Error create socket";
@@ -34,10 +34,10 @@ int main()
 		return -2;
 	}
 
-	sockaddr_in server_addr;	// Экземпляр с данными о сервере, ниже инициализация полей (указание адреса и порта сервера)
-	server_addr.sin_family = AF_INET;	// семейство протоколов (как правило AF_INET == для ip-адресов v4)
-	server_addr.sin_port = htons(PORT);	// порт
-	server_addr.sin_addr.S_un.S_addr = 0;	// поле с адресом
+	sockaddr_in server_addr;	// Р­РєР·РµРјРїР»СЏСЂ СЃ РґР°РЅРЅС‹РјРё Рѕ СЃРµСЂРІРµСЂРµ, РЅРёР¶Рµ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРѕР»РµР№ (СѓРєР°Р·Р°РЅРёРµ Р°РґСЂРµСЃР° Рё РїРѕСЂС‚Р° СЃРµСЂРІРµСЂР°)
+	server_addr.sin_family = AF_INET;	// СЃРµРјРµР№СЃС‚РІРѕ РїСЂРѕС‚РѕРєРѕР»РѕРІ (РєР°Рє РїСЂР°РІРёР»Рѕ AF_INET == РґР»СЏ ip-Р°РґСЂРµСЃРѕРІ v4)
+	server_addr.sin_port = htons(PORT);	// РїРѕСЂС‚
+	server_addr.sin_addr.S_un.S_addr = 0;	// РїРѕР»Рµ СЃ Р°РґСЂРµСЃРѕРј
 
 	HOSTENT *hst;
 
@@ -83,9 +83,9 @@ int main()
 
 	std::cout << "Client is close..." << std::endl;
 
-	shutdown(_socket, SD_BOTH);		// Выборочное закрытие соединений: и 'сервер -> клиент',и 'клиент -> сервер'
-	closesocket(_socket);		// Закрываем сокет
-	WSACleanup();	// Выгружаем из памяти библиотеку dll
+	shutdown(_socket, SD_BOTH);		// Р’С‹Р±РѕСЂРѕС‡РЅРѕРµ Р·Р°РєСЂС‹С‚РёРµ СЃРѕРµРґРёРЅРµРЅРёР№: Рё 'СЃРµСЂРІРµСЂ -> РєР»РёРµРЅС‚',Рё 'РєР»РёРµРЅС‚ -> СЃРµСЂРІРµСЂ'
+	closesocket(_socket);		// Р—Р°РєСЂС‹РІР°РµРј СЃРѕРєРµС‚
+	WSACleanup();	// Р’С‹РіСЂСѓР¶Р°РµРј РёР· РїР°РјСЏС‚Рё Р±РёР±Р»РёРѕС‚РµРєСѓ dll
 
 	std::cout << "Client is stopped\nProgram finished!!!" << std::endl;
 
