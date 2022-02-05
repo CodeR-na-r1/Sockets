@@ -34,7 +34,7 @@ int main()
 
 	sockaddr_in local_addr;	// Ёкземпл€р с данными о сервере, ниже инициализаци€ полей
 	local_addr.sin_family = AF_INET;	// семейство протоколов (как правило AF_INET == дл€ ip-адресов v4)
-	local_addr.sin_port = htons(PORT);	// порт
+	local_addr.sin_port = htons(PORT);	// порт		‘ункци€ htons == Host TO Network Short (»змен€ет пор€док байт на сетевой (не прм€ой)). “акже есть верси€ ntohl (Network TO Host Long). + htonl, ntohs
 	local_addr.sin_addr.S_un.S_addr = 0;	// поле с адресом
 	
 	if (bind(_socket, (sockaddr*)&local_addr, sizeof(local_addr)) == SOCKET_ERROR)	// —в€зывание порта с ip-фдресом (чтобы он мог принимать вход€щие соединени€)
@@ -59,7 +59,7 @@ int main()
 	sockaddr_in client_addr;
 	int size_client_addr = sizeof(client_addr);
 
-	const char* message = "Hello client!";
+	char message[] = "Hello client!\r\n";	// ∆елательно завершать символами перевода каретки и строки.
 
 	while ((client_socket = accept(_socket, (sockaddr*)&client_addr, &size_client_addr)) >= 0)	// ÷икл обработки поступающих запросов от клиентов
 	{
