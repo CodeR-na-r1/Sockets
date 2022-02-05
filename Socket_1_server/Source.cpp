@@ -71,11 +71,12 @@ int main()
 		/*Здесь возможно создание отдельных потоков и уже там обрабатывать поступающих клиентов*/
 
 		int size_mess;
-		while ((size_mess = recv(client_socket, bufer, sizeof(bufer), 0)) > 0)
+		while ((size_mess = recv(client_socket, bufer, sizeof(bufer), 0)) > 0)	// Условия выхода объединены в одно > 0, так как: Если < 0, то SOCKET_ERROR, иначе если == 0, то соединение было корректно закрыто
 		{
 			bufer[size_mess] = '\n';
 			std::cout << "\nClietn send === " << bufer << std::endl;
-			send(client_socket, bufer, size_mess, 0);
+			if (send(client_socket, bufer, size_mess, 0) <= 0)
+				break;
 		}
 		std::cout << "\nclient is disconnected\n" << std::endl;
 
